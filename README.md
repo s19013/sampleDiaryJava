@@ -6,6 +6,7 @@
 * intellij 2023.2
 * java 17
 * springBoot 3.1.2
+* maven 
 
 ## 依存関係
 * Spring Boot DevTools
