@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity //エンティティクラスであることを示すため
+/**
+ * @param string bodytext
+ *  @param localDateTime createDateTime
+ */
 public class Diary {
     public Diary(String bodytext,LocalDateTime createDateTime){
         this.bodytext = bodytext;
