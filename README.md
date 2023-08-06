@@ -16,3 +16,8 @@
 * Spring Data JPA
 * H2 Database
 * Validation
+
+# 気になること
+* update処理でDiaryには引数が2つしか無いのに3つ渡した状態なのにエラーなく動く
+* エラー表示に使う`#fields`,`*{}`はなに?
+* Iterable<>は何?
