@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Controller //フロントにデータを渡す場合は@controller restapiをしたければ@RestController
 @RequestMapping("diary")
 public class DiaryController {
@@ -33,6 +36,21 @@ public class DiaryController {
     @PostMapping("delete")
     public String delete(@RequestParam Integer id){
         diaryRepository.deleteById(id);
+        return "redirect:/diary/summary";
+    }
+
+    //新規登録
+    @PostMapping("add")
+    public String add(@RequestParam String newdiary){
+        //chronoUnit.Secondsで秒以下を切り捨て
+        // オブジェクトを生成?
+        Diary diary = new Diary(
+                newdiary,
+                LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+        );
+
+        // 保存
+        diaryRepository.save(diary);
         return "redirect:/diary/summary";
     }
 }
