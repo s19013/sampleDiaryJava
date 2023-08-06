@@ -1,8 +1,10 @@
 package com.example.sampleDiaryJava;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,9 @@ public class DiaryController {
     DiaryRepository diaryRepository;
 
     //日記一覧情報の取得
+    // フォームのエラーを表示するためにNewDiaryFormを追加
     @GetMapping("summary")
-    public String summary(Model model){
+    public String summary(Model model ,NewDiaryForm newDiaryForm){
         //このIterableとは何だ?
         //laravelでいうmodelクラスを使ったsql操作みたいなことをしてると思う
         //つまり N + 1問題が起きるということだよね?
@@ -41,11 +44,21 @@ public class DiaryController {
 
     //新規登録
     @PostMapping("add")
-    public String add(@RequestParam String newdiary){
+    public String add(
+            Model model,
+            @Valid NewDiaryForm newDiaryForm,
+            BindingResult bindingResult
+    ){
+        // バリデーションはすでに実行されているもよう｡おそらく @Validの時点で実行ずみ?
+        // エラーがあるなら新規登録をせずに一覧表示メソッドを呼び出す
+        if (bindingResult.hasErrors()) {
+            return summary(model,newDiaryForm);
+        }
+
         //chronoUnit.Secondsで秒以下を切り捨て
         // オブジェクトを生成?
         Diary diary = new Diary(
-                newdiary,
+                newDiaryForm.getNewdiary(),
                 LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
         );
 
