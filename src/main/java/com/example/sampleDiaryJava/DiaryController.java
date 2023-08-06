@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller //フロントにデータを渡す場合は@controller restapiをしたければ@RestController
 @RequestMapping("diary")
@@ -25,5 +27,12 @@ public class DiaryController {
         //laravel でいう Viewにwithみたいなことしてる
         model.addAttribute("diarys",diarys);
         return "summary";
+    }
+
+    //指定されたidの日記を削除
+    @PostMapping("delete")
+    public String delete(@RequestParam Integer id){
+        diaryRepository.deleteById(id);
+        return "redirect:/diary/summary";
     }
 }
