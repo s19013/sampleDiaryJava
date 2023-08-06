@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>【Spring Boot】日記投稿ウェブアプリ【Thymeleaf】</title>
+</head>
+<body>
+<h1>日記一覧</h1>
+<table>
+    <tr><th></th><th>投稿日時</th><th></th><th></th></tr>
+    <!--  th:eachで繰り返し  -->
+    <tr th:each="diary : ${diarys}">
+        <td th:text="${diary.bodytext}"></td>
+        <td th:text="${diary.createDatetime}"></td>
+        <td><a th:href="@{/diary/edit(id=${diary.id})}" class="btn btn-primary">編集</a></td>
+        <td>
+            <form th:action="@{/diary/delete}" method="post">
+                <input type="hidden" name="id" th:value="${diary.id}"/>
+                <input type="submit" value="削除"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<h3>新規投稿</h3>
+<form  th:action="@{/diary/add}" method="post">
+    <input type="text" name="newdiary">
+    <button type="submit">投稿する</button>
+</form>
+</body>
+</html>
