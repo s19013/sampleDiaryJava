@@ -66,4 +66,36 @@ public class DiaryController {
         diaryRepository.save(diary);
         return "redirect:/diary/summary";
     }
+
+    // 編集画面を表示
+    @GetMapping("edit")
+    public String edit(
+            Model model,
+            EditDiaryForm editDiaryForm
+    ){
+        Diary diary = diaryRepository.findById(editDiaryForm.getId()).get();
+        model.addAttribute("editdiary",diary);
+        return "edit";
+    }
+
+    // 更新
+    @PostMapping("update")
+    public String update(
+            Model model,
+            @Valid EditDiaryForm editDiaryForm,
+            BindingResult bindingResult
+    ){
+        if (bindingResult.hasErrors()){ return edit(model,editDiaryForm); }
+
+        // 一番最初にIdを入れているがコンストラクタでは2つしか引数がなかったはず?
+        // でも動いてるということはspringBootがなにかしているのか?
+        Diary diary = new Diary(
+                editDiaryForm.getId(),
+                editDiaryForm.getUpdateddiary(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+        );
+        diaryRepository.save(diary);
+
+        return "redirect:/diary/summary";
+    }
 }
